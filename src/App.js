@@ -1,25 +1,39 @@
-import logo from './logo.svg';
-import './App.css';
-
+import './App.scss';
+import { Footer } from './component/footer/Footer';
+import  Header  from './component/header/Header';
+import ProductList from './page/productList/ProductList';
+import  ProductDetail  from './page/productDetail/ProductDetail';
+import  ProductCart  from './page/productCart/ProductCart';
+import { Route, Routes } from 'react-router-dom';
+import { Navigation } from './component/navigation/Navigation';
+import { useState } from 'react';
+import  Filter from './component/filter/Filter';
 function App() {
+  const [isMenu, setIsMenu] = useState(false)
+  const [isFilter, setIsFilter] = useState(false)
+  const handleClicked=()=>setIsMenu(!isMenu);
+  const handleClose=()=>setIsMenu(false);
+  const handleFilter=()=>setIsFilter(!isFilter);
+  const closeFilter=()=>setIsFilter(false);
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <Header handleClicked={handleClicked}/>
+      <main>
+    
+        <Routes>
+          <Route exact path='/' element={<ProductList handleFilter={handleFilter}/>}></Route>
+          <Route path='/detail/:id' element={<ProductDetail />}></Route>
+          <Route path='/cart' element={<ProductCart />}></Route>
+        </Routes>
+        
+      </main>
+     
+      <Footer />
+      <Navigation isMenu={isMenu} navClose={()=>handleClose()}/>
+      <Filter isFilter={isFilter} filterClose={()=>closeFilter()} />
+    </>
+ 
   );
 }
-
+ 
 export default App;
